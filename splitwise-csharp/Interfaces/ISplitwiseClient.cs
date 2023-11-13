@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SplitwiseCSharp.Models;
+﻿using SplitwiseCSharp.Responses;
+
 namespace SplitwiseCSharp.Interfaces;
 
 internal interface ISplitwiseClient
 {
-    Task<SplitwiseUser> GetCurrentUser();
+    Task<GetCurrentUserResponse> GetCurrentUser();
 }

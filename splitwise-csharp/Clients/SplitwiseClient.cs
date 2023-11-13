@@ -1,5 +1,7 @@
-﻿using SplitwiseCSharp.Interfaces;
+﻿using System.Text.Json;
+using SplitwiseCSharp.Interfaces;
 using SplitwiseCSharp.Models;
+using SplitwiseCSharp.Responses;
 using SplitwiseCSharp.Utils;
 
 namespace SplitwiseCSharp.Clients;
@@ -14,9 +16,14 @@ public class SplitwiseClient : ISplitwiseClient
         Client = new HttpClient(new AuthenticatedHttpClientHandler(clientId, clientSecret));
     }
 
-    public SplitwiseUser GetSplitwiseUser() 
+    public async Task<GetCurrentUserResponse> GetCurrentUser() 
     {
-        var getUserReponse = Client.GetAsync(SplitwiseConstants.GET_CURRENT_USER_URL);
-
+        var getUserReponse = await Client.GetAsync(SplitwiseConstants.GET_CURRENT_USER_URL);
+        var getUserResponseJson = getUserReponse.Content;
+        if (getUserResponseJson != null) 
+        {
+            return JsonSerializerExtensions.DeserializeFromSnakeCase<GetCurrentUserResponse>(await getUserResponseJson.ReadAsStringAsync());
+        }
+        return null;
     }
 }

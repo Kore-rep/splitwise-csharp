@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SplitwiseCSharp.Models;
 
-namespace SplitwiseCSharp.Responses
+namespace SplitwiseCSharp.Responses;
+
+public class GetCurrentUserResponse
 {
-    public class GetCurrentUserResponse
-    {
-
-    }
+    public SplitwiseUser User { get; set; }
 }

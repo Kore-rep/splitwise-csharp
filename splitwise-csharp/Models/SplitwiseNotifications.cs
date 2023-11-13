@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SplitwiseCSharp.Models
 {
-    o class SplitwiseNotifications
+    class SplitwiseNotifications
     {
     }
 }
