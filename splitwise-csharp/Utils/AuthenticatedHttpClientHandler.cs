@@ -1,6 +1,8 @@
 ﻿
 namespace SplitwiseCSharp.Utils;
-
+/// <summary>
+/// A customer version of <see cref="HttpClientHandler"/> that ensures requests are Authenticated before sending.
+/// </summary>
 internal class AuthenticatedHttpClientHandler : HttpClientHandler
 {
     private string? AccessToken = null;

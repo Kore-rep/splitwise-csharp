@@ -2,7 +2,10 @@
 
 namespace SplitwiseCSharp.Responses;
 
+/// <summary>
+/// A response wrapper for the GetCurrentUser endpoint
+/// </summary>
 public class GetCurrentUserResponse
 {
-    public SplitwiseUser User { get; set; }
+    public SplitwiseUserSelf User { get; set; }
 }
