@@ -19,6 +19,7 @@ public class SplitwiseClient : ISplitwiseClient
     public async Task<GetCurrentUserResponse> GetCurrentUser() 
     {
         var getUserReponse = await Client.GetAsync(SplitwiseConstants.GET_CURRENT_USER_URL);
+        getUserReponse.EnsureSuccessStatusCode();
         var getUserResponseJson = getUserReponse.Content;
         if (getUserResponseJson != null) 
         {
@@ -26,4 +27,18 @@ public class SplitwiseClient : ISplitwiseClient
         }
         return null;
     }
+
+    public async Task<SplitwiseUser> GetUser(string userId)
+    {
+        var getUserReponse = await Client.GetAsync(SplitwiseConstants.GET_CURRENT_USER_URL + $"/{userId}");
+        var getUserResponseJson = getUserReponse.Content;
+        getUserReponse.EnsureSuccessStatusCode();
+        if (getUserResponseJson != null)
+        {
+            return JsonSerializerExtensions.DeserializeFromSnakeCase<SplitwiseUser>(await getUserResponseJson.ReadAsStringAsync());
+        }
+        return null;
+    }
+
+
 }
