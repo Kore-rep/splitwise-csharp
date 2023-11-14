@@ -3,7 +3,7 @@ using System.Text.Json;
 using SplitwiseCSharp.Responses;
 
 namespace SplitwiseCSharp.Utils;
-public class OAuthUtil
+internal class OAuthUtil
 {
     private static readonly HttpClient client = new();
 
