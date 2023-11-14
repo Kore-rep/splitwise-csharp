@@ -15,4 +15,5 @@ public class SplitwiseConstants
     // URLS for Users API
     public static readonly string GET_CURRENT_USER_URL = BASE_API_URL + "/get_current_user";
     public static readonly string GET_USER_URL = BASE_API_URL + "/get_user";
+    public static readonly string UPDATE_USER_URL = BASE_API_URL + "/update_user";
 }
