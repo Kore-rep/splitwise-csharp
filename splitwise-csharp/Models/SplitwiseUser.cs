@@ -5,9 +5,9 @@ namespace SplitwiseCSharp.Models;
 /// <summary>
 /// Base information available about all users through ID lookup.
 /// </summary>
-public class SplitwiseUser : ISplitwiseUser
+public class SplitwiseUser 
 {
-    public int Id { get; set; }
+    public int? Id { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set;}
     public string? Email { get; set; }
