@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SplitwiseCSharp.Requests;
+﻿namespace SplitwiseCSharp.Requests;
 
 /// <summary>
 /// A request body to update a user. Null values will not be sent in the request.

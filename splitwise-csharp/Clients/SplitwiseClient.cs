@@ -210,7 +210,6 @@ public class SplitwiseClient : ISplitwiseClient
         var combinedJson = JsonTools.MergeFlatJson(body, usersJson);
         var response = await Client.PostAsync(SplitwiseConstants.CREATE_GROUP_URL, new StringContent(combinedJson, Encoding.UTF8, "application/json"));
         var responseJson = response.Content;
-        var content = await responseJson.ReadAsStringAsync();
         response.EnsureSuccessStatusCode();
         if (responseJson != null)
         {
@@ -249,6 +248,59 @@ public class SplitwiseClient : ISplitwiseClient
         if (responseJson != null)
         {
             return JsonSerializerExtensions.DeserializeFromSnakeCase<DeleteGroupResponse>(await responseJson.ReadAsStringAsync());
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Restores a deleted group.
+    /// Note: 200 OK does not indicate a successful response.You must check the success value of the response.
+    /// </summary>
+    /// <param name="groupId">Id of deleted group</param>
+    /// <returns></returns>
+    public async Task<RestoreGroupResponse> RestoreGroup(int groupId)
+    {
+        var response = await Client.PostAsync(SplitwiseConstants.RESTORE_GROUP_URL + $"/{groupId}", null);
+        response.EnsureSuccessStatusCode();
+        var responseJson = response.Content;
+        if (responseJson != null)
+        {
+            return JsonSerializerExtensions.DeserializeFromSnakeCase<RestoreGroupResponse>(await responseJson.ReadAsStringAsync());
+        }
+        return null;
+    }
+    /// <summary>
+    /// Adds a given user to a given group.
+    /// Note: 200 OK does not indicate a successful response. You must check the success value of the response.
+    /// </summary>
+    /// <param name="req"></param>
+    /// <returns></returns>
+    public async Task<AddUserToGroupResponse> AddUserToGroup(AddUserToGroupRequest req)
+    {
+        var response = await Client.PostAsync(SplitwiseConstants.RESTORE_GROUP_URL, new StringContent(JsonSerializerExtensions.SerializeWithSnakeCase(req)));
+        response.EnsureSuccessStatusCode();
+        var responseJson = response.Content;
+        if (responseJson != null)
+        {
+            return JsonSerializerExtensions.DeserializeFromSnakeCase<AddUserToGroupResponse>(await responseJson.ReadAsStringAsync());
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Remove a user from a group. Does not succeed if the user has a non-zero balance.
+    /// Note: 200 OK does not indicate a successful response.You must check the success value of the response.
+    /// </summary>
+    /// <param name="req">The group and user details.</param>
+    /// <returns></returns>
+    public async Task<RemoveUserFromGroupResponse> RemoveUserFromGroup(RemoveUserFromGroupRequest req)
+    {
+        var response = await Client.PostAsync(SplitwiseConstants.RESTORE_GROUP_URL, new StringContent(JsonSerializerExtensions.SerializeWithSnakeCase(req)));
+        response.EnsureSuccessStatusCode();
+        var responseJson = response.Content;
+        if (responseJson != null)
+        {
+            return JsonSerializerExtensions.DeserializeFromSnakeCase<RemoveUserFromGroupResponse>(await responseJson.ReadAsStringAsync());
         }
         return null;
     }
