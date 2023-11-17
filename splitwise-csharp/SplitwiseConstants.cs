@@ -30,6 +30,9 @@ public class SplitwiseConstants
     public static readonly string GET_GROUP_URL = BASE_API_URL + "/get_group";
     public static readonly string CREATE_GROUP_URL = BASE_API_URL + "/create_group";
     public static readonly string DELETE_GROUP_URL = BASE_API_URL + "/delete_group";
+    public static readonly string RESTORE_GROUP_URL = BASE_API_URL + "/undelete_group";
+    public static readonly string ADD_USER_TO_GROUP_URL = BASE_API_URL + "/add_user_to_group";
+
 
 
 }

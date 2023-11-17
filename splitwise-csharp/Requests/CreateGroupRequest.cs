@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SplitwiseCSharp.Models;
-
-namespace SplitwiseCSharp.Requests;
+﻿namespace SplitwiseCSharp.Requests;
 
 public class CreateGroupRequest
 {
