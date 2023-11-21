@@ -12,7 +12,6 @@ namespace SplitwiseDotnetSDK.Utils;
 internal class MultiUserParser
 {
     private static readonly JsonSnakeCaseNamingPolicy Converter = new();
-    private static readonly string[] ValidProperties = ;
     internal static string ParseUsers(SplitwiseUser[] users)
     {
         return ParseMultiElementAdd("users", new string[] { "Id", "FirstName", "LastName", "Email" }, users);
@@ -41,7 +40,7 @@ internal class MultiUserParser
                 var jsonValue = prop.GetValue(user, null);
                 if (jsonValue == null) continue;
                 if (jsonValue.GetType() != typeof(int)) jsonValue = $"\"{jsonValue}\"";
-                if (!ValidProperties.Contains(prop.Name)) continue;
+                if (!validProps.Contains(prop.Name)) continue;
                 var jsonName = String.Concat(prefix, NameToSnake(prop.Name));
                 var finalString = $"\"{jsonName}\": {jsonValue},";
                 sb.Append(finalString);
