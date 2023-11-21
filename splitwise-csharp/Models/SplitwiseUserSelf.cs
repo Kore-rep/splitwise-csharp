@@ -20,7 +20,6 @@ public class SplitwiseUserSelf : SplitwiseUser
     public string CountryCode { get; set; }
     public string DateFormat { get; set; }
     public DateTime ForceRefreshAt { get; set; }
-    public bool CustomPicture { get; set; }
     public int DefaultGroupId { get; set; }
 }
 public class SplitwiseNotificationSettings
