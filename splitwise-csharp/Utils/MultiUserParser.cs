@@ -12,19 +12,30 @@ namespace SplitwiseCSharp.Utils;
 internal class MultiUserParser
 {
     private static readonly JsonSnakeCaseNamingPolicy Converter = new();
-    private static readonly string[] ValidProperties = { "Id", "FirstName", "LastName", "Email" };
+    private static readonly string[] ValidProperties = ;
     internal static string ParseUsers(SplitwiseUser[] users)
+    {
+        return ParseMultiElementAdd("users", new string[] { "Id", "FirstName", "LastName", "Email" }, users);
+    }
+
+    internal static string ParseFriends(SplitwiseUser[] friends)
+    {
+        return ParseMultiElementAdd("friends", new string[] { "Id", "FirstName", "LastName", "Email" }, friends);
+
+    }
+
+    internal static string ParseMultiElementAdd(string prefix, string[] validProps, SplitwiseUser[] elements)
     {
         StringBuilder sb = new StringBuilder();
         sb.Append('{');
         int i = 0;
-        foreach (SplitwiseUser user in users)
+        foreach (SplitwiseUser user in elements)
         {
             if (user.Email == null && user.Id == null)
             {
                 throw new ArgumentException("All Users require an id or an email.");
             }
-            string prefix = $"users__{i}__";
+            string indexedPrefix = $"{prefix}__{i}__";
             foreach (PropertyInfo prop in user.GetType().GetProperties())
             {
                 var jsonValue = prop.GetValue(user, null);
@@ -36,7 +47,7 @@ internal class MultiUserParser
                 sb.Append(finalString);
             }
         }
-        sb.Remove(sb.Length-1, 1);
+        sb.Remove(sb.Length - 1, 1);
         sb.Append('}');
         var final = sb.ToString();
         return final;

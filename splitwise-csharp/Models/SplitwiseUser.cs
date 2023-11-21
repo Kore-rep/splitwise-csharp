@@ -13,6 +13,7 @@ public class SplitwiseUser
     public string? Email { get; set; }
     public string? RegistrationStatus { get; set; }
     public SplitwisePicture? Picture { get; set; }
+    public bool CustomPicture { get; set; }
 }
 
 

@@ -26,13 +26,19 @@ public class SplitwiseConstants
     public static readonly string UPDATE_USER_URL = BASE_API_URL + "/update_user";
 
     // URLS for Groups API
-    public static readonly string GET_CURRENT_USER_GROUPS = BASE_API_URL + "/get_groups";
+    public static readonly string GET_CURRENT_USER_GROUPS_URL = BASE_API_URL + "/get_groups";
     public static readonly string GET_GROUP_URL = BASE_API_URL + "/get_group";
     public static readonly string CREATE_GROUP_URL = BASE_API_URL + "/create_group";
     public static readonly string DELETE_GROUP_URL = BASE_API_URL + "/delete_group";
     public static readonly string RESTORE_GROUP_URL = BASE_API_URL + "/undelete_group";
     public static readonly string ADD_USER_TO_GROUP_URL = BASE_API_URL + "/add_user_to_group";
 
+    // URLS for Friends API
+    public static readonly string GET_CURRENT_USER_FRIENDS_URL = BASE_API_URL + "/get_friends";
+    public static readonly string GET_FRIEND_URL = BASE_API_URL + "/get_friend";
+    public static readonly string ADD_FRIEND_URL = BASE_API_URL + "/create_friend";
+    public static readonly string ADD_FRIENDS_URL = BASE_API_URL + "/create_friends";
+    public static readonly string DELETE_FRIEND_URL = BASE_API_URL + "/delete_friend";
 
 
 }

@@ -143,7 +143,7 @@ public class SplitwiseClient : ISplitwiseClient
     /// <returns>A <see cref="GetCurrentUserGroupsResponse"/> or <c>null</c></returns>
     public async Task<GetCurrentUserGroupsResponse> GetCurrentUserGroups()
     {
-        var response = await Client.GetAsync(SplitwiseConstants.GET_CURRENT_USER_GROUPS);
+        var response = await Client.GetAsync(SplitwiseConstants.GET_CURRENT_USER_GROUPS_URL);
         response.EnsureSuccessStatusCode();
         var responseJson = response.Content;
         if (responseJson != null)
@@ -192,7 +192,7 @@ public class SplitwiseClient : ISplitwiseClient
     /// Creates a new group with the given information. 
     /// </summary>
     /// <param name="req">Basic details about the group</param>
-    /// <param name="users">A list of users to add to the group. (Group creator is added by default)</param>
+    /// <param name="users">A list of users to add to the group. (Group creator is added by default) Each user only requires email, first_name and last_name</param>
     /// <exception cref="HttpRequestException">
     /// Thrown when the Get Request fails.
     /// </exception>
@@ -301,6 +301,67 @@ public class SplitwiseClient : ISplitwiseClient
         if (responseJson != null)
         {
             return JsonSerializerExtensions.DeserializeFromSnakeCase<RemoveUserFromGroupResponse>(await responseJson.ReadAsStringAsync());
+        }
+        return null;
+    }
+
+    public async Task<GetCurrentUserFriendsResponse> GetCurretUserFriends()
+    {
+        var response = await Client.GetAsync(SplitwiseConstants.GET_CURRENT_USER_FRIENDS_URL);
+        response.EnsureSuccessStatusCode();
+        var responseJson = response.Content;
+        if (responseJson != null)
+        {
+            return JsonSerializerExtensions.DeserializeFromSnakeCase<GetCurrentUserFriendsResponse>(await responseJson.ReadAsStringAsync());
+        }
+        return null;
+    }
+
+    public async Task<GetFriendResponse> GetFriend(int id)
+    {
+        var response = await Client.GetAsync(SplitwiseConstants.GET_FRIEND_URL);
+        response.EnsureSuccessStatusCode();
+        var responseJson = response.Content;
+        if (responseJson != null)
+        {
+            return JsonSerializerExtensions.DeserializeFromSnakeCase<GetFriendResponse>(await responseJson.ReadAsStringAsync());
+        }
+        return null;
+    }
+
+    public async Task<GetFriendResponse> AddFriend(AddFriendRequest req)
+    {
+        var response = await Client.PostAsync(SplitwiseConstants.ADD_FRIEND_URL, new StringContent(JsonSerializerExtensions.SerializeWithSnakeCase(req)));
+        response.EnsureSuccessStatusCode();
+        var responseJson = response.Content;
+        if (responseJson != null)
+        {
+            return JsonSerializerExtensions.DeserializeFromSnakeCase<GetFriendResponse>(await responseJson.ReadAsStringAsync());
+        }
+        return null;
+    }
+
+    public async Task<AddFriendsResponse> AddFriends(SplitwiseUser[] users)
+    {
+        var usersJson = MultiUserParser.ParseFriends(users);
+        var response = await Client.PostAsync(SplitwiseConstants.ADD_FRIEND_URL, new StringContent(JsonSerializerExtensions.SerializeWithSnakeCase(usersJson)));
+        response.EnsureSuccessStatusCode();
+        var responseJson = response.Content;
+        if (responseJson != null)
+        {
+            return JsonSerializerExtensions.DeserializeFromSnakeCase<AddFriendsResponse>(await responseJson.ReadAsStringAsync());
+        }
+        return null;
+    }
+
+    public async Task<DeleteFriendResponse> AddFriends(int id)
+    {
+        var response = await Client.PostAsync(SplitwiseConstants.DELETE_FRIEND_URL + $"/{id}", null);
+        response.EnsureSuccessStatusCode();
+        var responseJson = response.Content;
+        if (responseJson != null)
+        {
+            return JsonSerializerExtensions.DeserializeFromSnakeCase<DeleteFriendResponse>(await responseJson.ReadAsStringAsync());
         }
         return null;
     }
