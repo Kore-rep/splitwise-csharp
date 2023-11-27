@@ -5,9 +5,7 @@ using SplitwiseDotnetSDK.Responses;
 namespace SplitwiseDotnetSDK.Utils;
 internal class OAuthUtil
 {
-    private static readonly HttpClient client = new();
-
-    public static async Task<SplitwiseTokenResponse> GetAccessTokenAsync(string clientId, string clientSecret)
+    public static async Task<SplitwiseTokenResponse> GetAccessTokenAsync(HttpClient client, string clientId, string clientSecret)
     {
         if (string.IsNullOrWhiteSpace(clientId) || string.IsNullOrWhiteSpace(clientSecret))
         {
@@ -22,10 +20,10 @@ internal class OAuthUtil
         var accessTokenReponseContentJson = await accessTokenResponse.Content.ReadAsStringAsync();
         if (accessTokenResponse.StatusCode != HttpStatusCode.OK)
         {
-            throw new Exception(accessTokenReponseContentJson);
+            throw new HttpRequestException(accessTokenReponseContentJson);
         }
 
         var accessTokenReponseContent = JsonSerializer.Deserialize<SplitwiseTokenResponse>(accessTokenReponseContentJson);
-        return accessTokenReponseContent ?? throw new Exception("Received null body");
+        return accessTokenReponseContent ?? throw new Exception("Got empty response.");
     }
 }

@@ -9,7 +9,7 @@ using SplitwiseDotnetSDK.Models;
 
 namespace SplitwiseDotnetSDK.Utils;
 
-internal class MultiUserParser
+internal static class MultiUserParser
 {
     private static readonly JsonSnakeCaseNamingPolicy Converter = new();
     internal static string ParseUsers(SplitwiseUser[] users)
@@ -23,9 +23,13 @@ internal class MultiUserParser
 
     }
 
-    internal static string ParseMultiElementAdd(string prefix, string[] validProps, SplitwiseUser[] elements)
+    private static string ParseMultiElementAdd(string prefix, string[] validProps, SplitwiseUser[] elements)
     {
-        StringBuilder sb = new StringBuilder();
+        if (elements.Length == 0)
+        {
+            throw new ArgumentException("No elements to Parse");
+        }
+        StringBuilder sb = new();
         sb.Append('{');
         int i = 0;
         foreach (SplitwiseUser user in elements)
@@ -41,12 +45,13 @@ internal class MultiUserParser
                 if (jsonValue == null) continue;
                 if (jsonValue.GetType() != typeof(int)) jsonValue = $"\"{jsonValue}\"";
                 if (!validProps.Contains(prop.Name)) continue;
-                var jsonName = String.Concat(prefix, NameToSnake(prop.Name));
-                var finalString = $"\"{jsonName}\": {jsonValue},";
+                var jsonName = String.Concat(indexedPrefix, NameToSnake(prop.Name));
+                var finalString = $"\"{jsonName}\": {jsonValue}, ";
                 sb.Append(finalString);
             }
+            i++;
         }
-        sb.Remove(sb.Length - 1, 1);
+        sb.Remove(sb.Length - 2, 2); // Remove trailing comma + space
         sb.Append('}');
         var final = sb.ToString();
         return final;
