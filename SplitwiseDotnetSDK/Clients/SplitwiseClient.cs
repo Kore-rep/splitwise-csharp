@@ -16,7 +16,7 @@ namespace SplitwiseDotnetSDK.Clients;
 public class SplitwiseClient : ISplitwiseClient
 {
 
-    private readonly HttpClient Client;
+    private readonly HttpClient _authClient;
 
     /// <summary>
     /// The constructor for a Splitwise Client.
@@ -25,7 +25,7 @@ public class SplitwiseClient : ISplitwiseClient
     /// <param name="clientSecret">Consumber Secret from https://secure.splitwise.com</param>
     public SplitwiseClient(string clientId, string clientSecret)
     {
-        Client = new HttpClient(new AuthenticatedHttpClientHandler(clientId, clientSecret));
+        _authClient = new HttpClient(new AuthenticatedHttpClientHandler(clientId, clientSecret, new HttpClient()));
     }
 
     /// <summary>
@@ -46,7 +46,7 @@ public class SplitwiseClient : ISplitwiseClient
     /// </returns>
     public async Task<GetCurrentUserResponse> GetCurrentUser() 
     {
-        var getUserReponse = await Client.GetAsync(SplitwiseConstants.GET_CURRENT_USER_URL);
+        var getUserReponse = await _authClient.GetAsync(SplitwiseConstants.GET_CURRENT_USER_URL);
         getUserReponse.EnsureSuccessStatusCode();
         var getUserResponseJson = getUserReponse.Content;
         if (getUserResponseJson != null) 
@@ -81,7 +81,7 @@ public class SplitwiseClient : ISplitwiseClient
     /// <returns>A <see cref="GetUserByIdResponse"/> or <c>null</c></returns>
     public async Task<GetUserByIdResponse> GetUser(int userId)
     {
-        var response = await Client.GetAsync(SplitwiseConstants.GET_USER_URL + $"/{userId}");
+        var response = await _authClient.GetAsync(SplitwiseConstants.GET_USER_URL + $"/{userId}");
         response.EnsureSuccessStatusCode();
         var responseJson = response.Content;
         if (responseJson != null)
@@ -118,7 +118,7 @@ public class SplitwiseClient : ISplitwiseClient
     { 
 
         var body = JsonSerializerExtensions.SerializeWithSnakeCase(req);
-        var response = await Client.PostAsync(SplitwiseConstants.UPDATE_USER_URL + $"/{userId}", new StringContent(body));
+        var response = await _authClient.PostAsync(SplitwiseConstants.UPDATE_USER_URL + $"/{userId}", new StringContent(body));
         response.EnsureSuccessStatusCode();
         var responseJson = response.Content;
         if (responseJson != null)
@@ -143,7 +143,7 @@ public class SplitwiseClient : ISplitwiseClient
     /// <returns>A <see cref="GetCurrentUserGroupsResponse"/> or <c>null</c></returns>
     public async Task<GetCurrentUserGroupsResponse> GetCurrentUserGroups()
     {
-        var response = await Client.GetAsync(SplitwiseConstants.GET_CURRENT_USER_GROUPS_URL);
+        var response = await _authClient.GetAsync(SplitwiseConstants.GET_CURRENT_USER_GROUPS_URL);
         response.EnsureSuccessStatusCode();
         var responseJson = response.Content;
         if (responseJson != null)
@@ -177,7 +177,7 @@ public class SplitwiseClient : ISplitwiseClient
     /// <returns>A <see cref="GetGroupByIdResponse"/> or <c>null</c></returns>
     public async Task<GetGroupByIdResponse> GetGroup(int groupId)
     {
-        var response = await Client.GetAsync(SplitwiseConstants.GET_GROUP_URL + $"/{groupId}");
+        var response = await _authClient.GetAsync(SplitwiseConstants.GET_GROUP_URL + $"/{groupId}");
         response.EnsureSuccessStatusCode();
         var responseJson = response.Content;
         if (responseJson != null)
@@ -208,7 +208,7 @@ public class SplitwiseClient : ISplitwiseClient
         var body = JsonSerializerExtensions.SerializeWithSnakeCase(req);
         var usersJson = MultiUserParser.ParseUsers(users);
         var combinedJson = JsonTools.MergeFlatJson(body, usersJson);
-        var response = await Client.PostAsync(SplitwiseConstants.CREATE_GROUP_URL, new StringContent(combinedJson, Encoding.UTF8, "application/json"));
+        var response = await _authClient.PostAsync(SplitwiseConstants.CREATE_GROUP_URL, new StringContent(combinedJson, Encoding.UTF8, "application/json"));
         var responseJson = response.Content;
         response.EnsureSuccessStatusCode();
         if (responseJson != null)
@@ -242,7 +242,7 @@ public class SplitwiseClient : ISplitwiseClient
     /// <returns>A <see cref="DeleteGroupResponse"/> or <c>null</c></returns>
     public async Task<DeleteGroupResponse> DeleteGroup(int groupId)
     {
-        var response = await Client.PostAsync(SplitwiseConstants.DELETE_GROUP_URL + $"/{groupId}", null);
+        var response = await _authClient.PostAsync(SplitwiseConstants.DELETE_GROUP_URL + $"/{groupId}", null);
         response.EnsureSuccessStatusCode();
         var responseJson = response.Content;
         if (responseJson != null)
@@ -260,7 +260,7 @@ public class SplitwiseClient : ISplitwiseClient
     /// <returns></returns>
     public async Task<RestoreGroupResponse> RestoreGroup(int groupId)
     {
-        var response = await Client.PostAsync(SplitwiseConstants.RESTORE_GROUP_URL + $"/{groupId}", null);
+        var response = await _authClient.PostAsync(SplitwiseConstants.RESTORE_GROUP_URL + $"/{groupId}", null);
         response.EnsureSuccessStatusCode();
         var responseJson = response.Content;
         if (responseJson != null)
@@ -277,7 +277,7 @@ public class SplitwiseClient : ISplitwiseClient
     /// <returns></returns>
     public async Task<AddUserToGroupResponse> AddUserToGroup(AddUserToGroupRequest req)
     {
-        var response = await Client.PostAsync(SplitwiseConstants.RESTORE_GROUP_URL, new StringContent(JsonSerializerExtensions.SerializeWithSnakeCase(req)));
+        var response = await _authClient.PostAsync(SplitwiseConstants.RESTORE_GROUP_URL, new StringContent(JsonSerializerExtensions.SerializeWithSnakeCase(req)));
         response.EnsureSuccessStatusCode();
         var responseJson = response.Content;
         if (responseJson != null)
@@ -295,7 +295,7 @@ public class SplitwiseClient : ISplitwiseClient
     /// <returns></returns>
     public async Task<RemoveUserFromGroupResponse> RemoveUserFromGroup(RemoveUserFromGroupRequest req)
     {
-        var response = await Client.PostAsync(SplitwiseConstants.RESTORE_GROUP_URL, new StringContent(JsonSerializerExtensions.SerializeWithSnakeCase(req)));
+        var response = await _authClient.PostAsync(SplitwiseConstants.RESTORE_GROUP_URL, new StringContent(JsonSerializerExtensions.SerializeWithSnakeCase(req)));
         response.EnsureSuccessStatusCode();
         var responseJson = response.Content;
         if (responseJson != null)
@@ -307,7 +307,7 @@ public class SplitwiseClient : ISplitwiseClient
 
     public async Task<GetCurrentUserFriendsResponse> GetCurretUserFriends()
     {
-        var response = await Client.GetAsync(SplitwiseConstants.GET_CURRENT_USER_FRIENDS_URL);
+        var response = await _authClient.GetAsync(SplitwiseConstants.GET_CURRENT_USER_FRIENDS_URL);
         response.EnsureSuccessStatusCode();
         var responseJson = response.Content;
         if (responseJson != null)
@@ -319,7 +319,7 @@ public class SplitwiseClient : ISplitwiseClient
 
     public async Task<GetFriendResponse> GetFriend(int id)
     {
-        var response = await Client.GetAsync(SplitwiseConstants.GET_FRIEND_URL);
+        var response = await _authClient.GetAsync(SplitwiseConstants.GET_FRIEND_URL);
         response.EnsureSuccessStatusCode();
         var responseJson = response.Content;
         if (responseJson != null)
@@ -331,7 +331,7 @@ public class SplitwiseClient : ISplitwiseClient
 
     public async Task<GetFriendResponse> AddFriend(AddFriendRequest req)
     {
-        var response = await Client.PostAsync(SplitwiseConstants.ADD_FRIEND_URL, new StringContent(JsonSerializerExtensions.SerializeWithSnakeCase(req)));
+        var response = await _authClient.PostAsync(SplitwiseConstants.ADD_FRIEND_URL, new StringContent(JsonSerializerExtensions.SerializeWithSnakeCase(req)));
         response.EnsureSuccessStatusCode();
         var responseJson = response.Content;
         if (responseJson != null)
@@ -344,7 +344,7 @@ public class SplitwiseClient : ISplitwiseClient
     public async Task<AddFriendsResponse> AddFriends(SplitwiseUser[] users)
     {
         var usersJson = MultiUserParser.ParseFriends(users);
-        var response = await Client.PostAsync(SplitwiseConstants.ADD_FRIEND_URL, new StringContent(JsonSerializerExtensions.SerializeWithSnakeCase(usersJson)));
+        var response = await _authClient.PostAsync(SplitwiseConstants.ADD_FRIEND_URL, new StringContent(JsonSerializerExtensions.SerializeWithSnakeCase(usersJson)));
         response.EnsureSuccessStatusCode();
         var responseJson = response.Content;
         if (responseJson != null)
@@ -356,7 +356,7 @@ public class SplitwiseClient : ISplitwiseClient
 
     public async Task<DeleteFriendResponse> AddFriends(int id)
     {
-        var response = await Client.PostAsync(SplitwiseConstants.DELETE_FRIEND_URL + $"/{id}", null);
+        var response = await _authClient.PostAsync(SplitwiseConstants.DELETE_FRIEND_URL + $"/{id}", null);
         response.EnsureSuccessStatusCode();
         var responseJson = response.Content;
         if (responseJson != null)
