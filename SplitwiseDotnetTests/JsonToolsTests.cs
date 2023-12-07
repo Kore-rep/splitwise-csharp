@@ -1,6 +1,4 @@
-﻿using SplitwiseDotnetSDK.Utils;
-
-namespace SplitwiseDotnetTests;
+﻿namespace SplitwiseDotnetTests;
 
 [TestFixture]
 internal class JsonToolsTests
