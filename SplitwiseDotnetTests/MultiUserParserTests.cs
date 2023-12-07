@@ -1,5 +1,4 @@
 ﻿using SplitwiseDotnetSDK.Models;
-using SplitwiseDotnetSDK.Utils;
 
 namespace SplitwiseDotnetTests;
 
