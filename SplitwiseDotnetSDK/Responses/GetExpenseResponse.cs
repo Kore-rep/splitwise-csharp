@@ -7,9 +7,8 @@ using SplitwiseDotnetSDK.Models;
 
 namespace SplitwiseDotnetSDK.Responses
 {
-    public class AddFriendsResponse : CreateResponseBase
+    public class GetExpenseResponse
     {
-        public SplitwiseFriend[] Users { get; set; }
-
+        public SplitwiseExpense Expense { get; set; }
     }
 }

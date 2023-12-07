@@ -40,5 +40,9 @@ public class SplitwiseConstants
     public static readonly string ADD_FRIENDS_URL = BASE_API_URL + "/create_friends";
     public static readonly string DELETE_FRIEND_URL = BASE_API_URL + "/delete_friend";
 
+    // UrLS for Expenses API
+    public static readonly string GET_EXPENSE_URL = BASE_API_URL + "/get_expense";
+    public static readonly string GET_CURRENT_USER_EXPENSES_URL = BASE_API_URL + "/get_expenses";
+    public static readonly string CREATE_EXPENSE_URL = BASE_API_URL + "/create_expense";
 
 }

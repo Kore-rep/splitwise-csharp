@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace SplitwiseDotnetSDK.Responses;
 
-public class DeleteFriendResponse
+public class DeleteFriendResponse : CreateResponseBase
 {
     public bool Success { get; set; }
-    public string[] Errors { get; set; }
 }

@@ -2,9 +2,8 @@
 
 namespace SplitwiseDotnetSDK.Responses;
 
-public class AddUserToGroupResponse
+public class AddUserToGroupResponse : CreateResponseBase
 {
     public bool Success { get; set; }
     public SplitwiseUser User { get; set; }
-    public string[] Errors { get; set; }
 }

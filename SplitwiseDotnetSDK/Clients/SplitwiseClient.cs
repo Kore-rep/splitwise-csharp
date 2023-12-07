@@ -354,7 +354,7 @@ public class SplitwiseClient : ISplitwiseClient
         return null;
     }
 
-    public async Task<DeleteFriendResponse> AddFriends(int id)
+    public async Task<DeleteFriendResponse> DeleteFriend(int id)
     {
         var response = await _authClient.PostAsync(SplitwiseConstants.DELETE_FRIEND_URL + $"/{id}", null);
         response.EnsureSuccessStatusCode();
@@ -362,6 +362,42 @@ public class SplitwiseClient : ISplitwiseClient
         if (responseJson != null)
         {
             return JsonSerializerExtensions.DeserializeFromSnakeCase<DeleteFriendResponse>(await responseJson.ReadAsStringAsync());
+        }
+        return null;
+    }
+
+    public async Task<GetExpenseResponse> GetExpense(int id)
+    {
+        var response = await _authClient.PostAsync(SplitwiseConstants.GET_EXPENSE_URL + $"/{id}", null);
+        response.EnsureSuccessStatusCode();
+        var responseJson = response.Content;
+        if (responseJson != null)
+        {
+            return JsonSerializerExtensions.DeserializeFromSnakeCase<GetExpenseResponse>(await responseJson.ReadAsStringAsync());
+        }
+        return null;
+    }
+
+    public async Task<GetCurrentUserExpensesResponse> GetCurrentUserExpenses(int id)
+    {
+        var response = await _authClient.PostAsync(SplitwiseConstants.GET_CURRENT_USER_EXPENSES_URL + $"/{id}", null);
+        response.EnsureSuccessStatusCode();
+        var responseJson = response.Content;
+        if (responseJson != null)
+        {
+            return JsonSerializerExtensions.DeserializeFromSnakeCase<GetCurrentUserExpensesResponse>(await responseJson.ReadAsStringAsync());
+        }
+        return null;
+    }
+
+    public async Task<CreateExpenseResponse> CreateExpense(CreateExpenseRequest req)
+    {
+        var response = await _authClient.PostAsync(SplitwiseConstants.RESTORE_GROUP_URL, new StringContent(JsonSerializerExtensions.SerializeWithSnakeCase(req)));
+        response.EnsureSuccessStatusCode();
+        var responseJson = response.Content;
+        if (responseJson != null)
+        {
+            return JsonSerializerExtensions.DeserializeFromSnakeCase<CreateExpenseResponse>(await responseJson.ReadAsStringAsync());
         }
         return null;
     }
