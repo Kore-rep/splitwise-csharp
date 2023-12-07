@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace SplitwiseDotnetSDK.Models
 {
-    public class SplitwiseDebt : SplitwiseMoneyMovement
+    public class SplitwisePayment : SplitwiseMoneyMovement
     {
-        public string CurrencyCode { get; set; }
-        
     }
 }
