@@ -45,5 +45,4 @@ public class SplitwiseConstants
     public static readonly string GET_CURRENT_USER_EXPENSES_URL = BASE_API_URL + "/get_expenses";
     public static readonly string CREATE_EXPENSE_URL = BASE_API_URL + "/create_expense";
 
-
 }
